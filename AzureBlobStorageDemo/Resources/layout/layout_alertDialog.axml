@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@android:color/transparent"
+	android:minWidth="1000dp"
+	android:minHeight="150dp">
+	<Button
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Take a Picture"
+		android:textAllCaps="false"
+		android:background="@android:color/transparent"
+		android:textColor="@android:color/black"
+		android:layout_marginLeft="20dp"
+		android:drawableTop="@android:drawable/ic_menu_camera"
+		android:id="@+id/takePicCamera"
+		android:layout_centerVertical="true"/>
+	<Button
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/selectPic"
+		android:background="@android:color/transparent"
+		android:textColor="@android:color/black"
+		android:layout_centerVertical="true"
+		android:text="Select Picture"
+		android:textAllCaps="false"
+		android:drawableTop="@android:drawable/ic_menu_gallery"
+		android:layout_alignParentEnd="true"
+		android:layout_marginRight="20dp"/>
+</RelativeLayout>
