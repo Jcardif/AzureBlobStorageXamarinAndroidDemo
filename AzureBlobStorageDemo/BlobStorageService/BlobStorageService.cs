@@ -20,7 +20,7 @@ namespace AzureBlobStorageDemo
             _lowResBlobContainer = _blobClient.GetContainerReference("lowres-aeroplane-images");
             _mediumResBlobContainer = _blobClient.GetContainerReference("mediumres-aeroplane-images");
 
-            AssignValues();
+            InitialiseSettings();
         }
 
         private CloudBlobClient _blobClient = CloudStorageAccount.Parse(ConnectionString).CreateCloudBlobClient();

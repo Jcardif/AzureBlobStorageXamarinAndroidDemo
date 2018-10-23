@@ -5,6 +5,7 @@ namespace Backend.DataObjects
 {
     public class Aeroplane : EntityData
     {
+        
         public string Description { get; set; }
 
         public Uri Uri { get; set; }

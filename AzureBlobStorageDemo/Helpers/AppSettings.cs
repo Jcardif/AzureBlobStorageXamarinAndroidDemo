@@ -16,5 +16,6 @@ namespace AzureBlobStorageDemo.Helpers
     public static partial class AppSettings
     {
         public static string ConnectionString { get; set; }
+        public static string AppUrl { get; set; }
     }
 }
