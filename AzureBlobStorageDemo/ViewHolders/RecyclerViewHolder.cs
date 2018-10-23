@@ -22,5 +22,6 @@ namespace AzureBlobStorageDemo.ViewHolders
         public View View { get; set; }
         public ImageView ImageView { get; set; }
         public TextView TitleTextView { get; set; }
+        public TextView DescTextView { get; set; }
     }
 }

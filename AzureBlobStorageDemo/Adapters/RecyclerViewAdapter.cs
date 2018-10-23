@@ -40,6 +40,7 @@ namespace AzureBlobStorageDemo.Adapters
         private void CustomBindViewHolder(RecyclerViewHolder vh, int position)
         {
             vh.TitleTextView.Text = _aeroplanes[position].Name;
+            vh.DescTextView.Text = _aeroplanes[position].Description;
 
             Picasso.With(_context)
                 .IndicatorsEnabled = true;
@@ -56,10 +57,12 @@ namespace AzureBlobStorageDemo.Adapters
             var view = LayoutInflater.From(_context).Inflate(Resource.Layout.aeroplane_Item, parent, false);
              var imgView = view.FindViewById<ImageView>(Resource.Id.aero_ImgView);
             var textView = view.FindViewById<TextView>(Resource.Id.nameTxtView);
+            var txtViewdesc = view.FindViewById<TextView>(Resource.Id.descTxtView);
             var viewHolder = new RecyclerViewHolder(view)
             {
                 ImageView = imgView,
-                TitleTextView = textView
+                TitleTextView = textView,
+                DescTextView = txtViewdesc
             };
 
             return viewHolder;

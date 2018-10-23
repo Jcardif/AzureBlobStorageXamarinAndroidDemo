@@ -30,6 +30,6 @@
 			android:text="Description"
 			android:id="@+id/descTxtView"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"/>
 	</RelativeLayout>
 </RelativeLayout>
