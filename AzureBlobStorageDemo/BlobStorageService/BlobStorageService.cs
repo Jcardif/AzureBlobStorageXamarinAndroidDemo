@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Android.Provider;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using  static AzureBlobStorageDemo.Helpers.AppSettings;
@@ -14,31 +15,25 @@ namespace AzureBlobStorageDemo
         private CloudBlobContainer _fullResBlobContainer;
         private CloudBlobContainer _lowResBlobContainer;
         private CloudBlobContainer _mediumResBlobContainer;
+        private CloudBlobClient _blobClient;
+        private CloudStorageAccount _cloudStorageAccount;
         public BlobStorageService()
         {
+            InitialiseSettings();
+            _cloudStorageAccount=CloudStorageAccount.Parse(ConnectionString);
+            _blobClient = _cloudStorageAccount.CreateCloudBlobClient();
+
             _fullResBlobContainer = _blobClient.GetContainerReference("fullres-aeroplane-images");
             _lowResBlobContainer = _blobClient.GetContainerReference("lowres-aeroplane-images");
             _mediumResBlobContainer = _blobClient.GetContainerReference("mediumres-aeroplane-images");
-
-            InitialiseSettings();
         }
 
-        private CloudBlobClient _blobClient = CloudStorageAccount.Parse(ConnectionString).CreateCloudBlobClient();
-
-        public async Task<List<Uri>> GetAllUrisAsync()
+        public async Task<Uri> UploadToBlobContainer(string filePath)
         {
-            var token=new BlobContinuationToken();
-            var allBlobs = await _fullResBlobContainer.ListBlobsSegmentedAsync(token).ConfigureAwait(false);
-            return allBlobs.Results.Select(b => b.Uri).ToList();
-        }
-
-        public async Task UploadImageAsync(string localPath)
-        {
-            var blobName = Guid.NewGuid().ToString();
-            blobName += Path.GetExtension(localPath);
-
-            var blobRef = _fullResBlobContainer.GetBlockBlobReference(blobName);
-            await blobRef.UploadFromFileAsync(localPath).ConfigureAwait(false);
+            var blobName = Guid.NewGuid().ToString() + Path.GetExtension(filePath);
+            var blockBlob = _fullResBlobContainer.GetBlockBlobReference(blobName);
+            await blockBlob.UploadFromFileAsync(filePath);
+            return _fullResBlobContainer.GetBlobReference(blobName).Uri;
         }
     }
 }

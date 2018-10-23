@@ -15,7 +15,7 @@ namespace AzureBlobStorageDemo.AzureMobileService
         private MobileServiceClient _client;
         private IMobileServiceSyncTable<Aeroplane> _aeroplaneTable;
 
-        public  async Task Initialise()
+        private async Task Initialise()
         {
             InitialiseSettings();
             if (_client?.SyncContext?.IsInitialized ?? false) return;

@@ -9,6 +9,7 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using AzureBlobStorageDemo.Adapters;
+using AzureBlobStorageDemo.AzureMobileService;
 using AzureBlobStorageDemo.DialogFragment;
 using AzureBlobStorageDemo.Models;
 using Plugin.CurrentActivity;
@@ -49,13 +50,9 @@ namespace AzureBlobStorageDemo.Activity
 
         private async void GetData()
         {
-            var aeroplanes = new List<Aeroplane>();
-            var uris = await new BlobStorageService().GetAllUrisAsync();
-            foreach (var a in uris)
-            {
-                aeroplanes.Add(new Aeroplane { Title = "1", Uri = a.ToString() });
-            }
-            _recyclerView.SetAdapter(new RecyclerViewAdapter(aeroplanes, this));
+            var aeroplaneService = new AeroplanesService();
+            var planes = await aeroplaneService.GetAeroplanes();
+            _recyclerView.SetAdapter(new RecyclerViewAdapter(planes, this));
             _recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             progressBar.Visibility = ViewStates.Invisible;
         }
