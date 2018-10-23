@@ -27,6 +27,11 @@ namespace AzureBlobStorageDemo.Activity
         protected override  void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            // This MobileServiceClient has been configured to communicate with the Azure Mobile App and
+            // Azure Gateway using the application url. You're all set to start working with your Mobile App!
+            Microsoft.WindowsAzure.MobileServices.MobileServiceClient aeroclubkeClient = new Microsoft.WindowsAzure.MobileServices.MobileServiceClient(
+            "https://aeroclubke.azurewebsites.net");
             CrossCurrentActivity.Current.Init(this,savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
