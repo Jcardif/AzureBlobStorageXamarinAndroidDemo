@@ -5,10 +5,10 @@ namespace Backend.DataObjects
 {
     public class Aeroplane : EntityData
     {
-        
+
+        public string Name { get; set; }
+        public Uri Uri { get; set; }
         public string Description { get; set; }
 
-        public Uri Uri { get; set; }
-        public string Name { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace AzureBlobStorageDemo.Adapters
 
         private void CustomBindViewHolder(RecyclerViewHolder vh, int position)
         {
-            vh.TitleTextView.Text = _aeroplanes[position].Title;
+            vh.TitleTextView.Text = _aeroplanes[position].Name;
 
             Picasso.With(_context)
                 .IndicatorsEnabled = true;

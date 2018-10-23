@@ -107,7 +107,7 @@ namespace AzureBlobStorageDemo.Activity
                     });
                 if (file == null) return;
                 progressBar.Visibility = ViewStates.Visible;
-                await new BlobStorageService().UploadImageAsync(file.Path);
+                await new BlobStorageService().UploadToBlobContainer(file.Path);
                 file.Dispose();
                  GetData();
             }
@@ -119,7 +119,7 @@ namespace AzureBlobStorageDemo.Activity
                     CompressionQuality = 30
                 });
                 progressBar.Visibility = ViewStates.Visible;
-                await new BlobStorageService().UploadImageAsync(file.Path);
+                await new BlobStorageService().UploadToBlobContainer(file.Path);
                 file.Dispose();
                 GetData();
             }

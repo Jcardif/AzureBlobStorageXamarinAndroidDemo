@@ -20,8 +20,16 @@
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:textColor="@android:color/black"
+			android:textColor="#2196f3"
 			android:text="Aeroplane"
+			android:textSize="20sp"
+			android:textStyle="bold"
 			android:id="@+id/nameTxtView"/>
+		<TextView
+			android:layout_below="@id/nameTxtView"
+			android:text="Description"
+			android:id="@+id/descTxtView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 	</RelativeLayout>
 </RelativeLayout>
