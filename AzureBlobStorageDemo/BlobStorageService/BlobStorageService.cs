@@ -12,9 +12,7 @@ namespace AzureBlobStorageDemo
 {
     public class BlobStorageService
     {
-        private CloudBlobContainer _fullResBlobContainer;
-        private CloudBlobContainer _lowResBlobContainer;
-        private CloudBlobContainer _mediumResBlobContainer;
+        private CloudBlobContainer _blobContainer;
         private CloudBlobClient _blobClient;
         private CloudStorageAccount _cloudStorageAccount;
         public BlobStorageService()
@@ -23,17 +21,15 @@ namespace AzureBlobStorageDemo
             _cloudStorageAccount=CloudStorageAccount.Parse(ConnectionString);
             _blobClient = _cloudStorageAccount.CreateCloudBlobClient();
 
-            _fullResBlobContainer = _blobClient.GetContainerReference("fullres-aeroplane-images");
-            _lowResBlobContainer = _blobClient.GetContainerReference("lowres-aeroplane-images");
-            _mediumResBlobContainer = _blobClient.GetContainerReference("mediumres-aeroplane-images");
+            _blobContainer = _blobClient.GetContainerReference("aeroplane-images");
         }
 
         public async Task<Uri> UploadToBlobContainer(string filePath)
         {
             var blobName = Guid.NewGuid().ToString() + Path.GetExtension(filePath);
-            var blockBlob = _fullResBlobContainer.GetBlockBlobReference(blobName);
+            var blockBlob = _blobContainer.GetBlockBlobReference(blobName);
             await blockBlob.UploadFromFileAsync(filePath);
-            return _fullResBlobContainer.GetBlobReference(blobName).Uri;
+            return _blobContainer.GetBlobReference(blobName).Uri;
         }
     }
 }

@@ -15,6 +15,7 @@ using AzureBlobStorageDemo.Models;
 using Plugin.CurrentActivity;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Syncfusion.Android.DataForm;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace AzureBlobStorageDemo.Activity
@@ -24,6 +25,7 @@ namespace AzureBlobStorageDemo.Activity
     {
         private ProgressBar progressBar;
         private RecyclerView _recyclerView;
+        private Aeroplane _plane;
 
         protected override  void OnCreate(Bundle savedInstanceState)
         {
@@ -31,8 +33,7 @@ namespace AzureBlobStorageDemo.Activity
 
             // This MobileServiceClient has been configured to communicate with the Azure Mobile App and
             // Azure Gateway using the application url. You're all set to start working with your Mobile App!
-            Microsoft.WindowsAzure.MobileServices.MobileServiceClient aeroclubkeClient = new Microsoft.WindowsAzure.MobileServices.MobileServiceClient(
-            "https://aeroclubke.azurewebsites.net");
+           
             CrossCurrentActivity.Current.Init(this,savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
@@ -43,6 +44,8 @@ namespace AzureBlobStorageDemo.Activity
             progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView1);
             
+            _plane=new Aeroplane();
+
             fab.Click += FabOnClick;
             GetData();
         }
@@ -106,10 +109,54 @@ namespace AzureBlobStorageDemo.Activity
                         Name = $"{DateTime.Now}_Plane.jpg"
                     });
                 if (file == null) return;
-                progressBar.Visibility = ViewStates.Visible;
-                await new BlobStorageService().UploadToBlobContainer(file.Path);
-                file.Dispose();
-                 GetData();
+
+
+                var dataformParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                dataformParams.Height = ViewGroup.LayoutParams.WrapContent;
+                dataformParams.Width = ViewGroup.LayoutParams.WrapContent;
+                
+
+                var sfDataform = new SfDataForm(this);
+                sfDataform.DataObject = _plane;
+                sfDataform.LabelPosition = LabelPosition.Top;
+                sfDataform.ValidationMode = ValidationMode.LostFocus;
+                sfDataform.CommitMode = CommitMode.LostFocus;
+                sfDataform.Id = View.GenerateViewId();
+
+                var buttonParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                buttonParams.AddRule(LayoutRules.Below,sfDataform.Id);
+                buttonParams.Height = ViewGroup.LayoutParams.WrapContent;
+                buttonParams.Width = ViewGroup.LayoutParams.WrapContent;
+                buttonParams.AddRule(LayoutRules.CenterHorizontal);
+
+                var button=new Button(this);
+                button.Text="Done";
+                button.Id = View.GenerateViewId();
+
+                var relativeLayout = new RelativeLayout(this);
+                relativeLayout.AddView(sfDataform, dataformParams);
+                relativeLayout.AddView(button, buttonParams);
+
+
+                var builder = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetView(relativeLayout)
+                    .Create();
+                 builder.SetCanceledOnTouchOutside(false);
+                builder.Show();
+                builder.Window.SetLayout(1000, 500);
+
+                button.Click += async (s, ev) =>
+                {
+                    sfDataform.Validate();
+                    sfDataform.Commit();
+                    Dispose();
+
+                    progressBar.Visibility = ViewStates.Visible;
+                    await new BlobStorageService().UploadToBlobContainer(file.Path);
+                    file.Dispose();
+                    GetData();
+                };
+
             }
             else if (e.Code == 2)
             {
