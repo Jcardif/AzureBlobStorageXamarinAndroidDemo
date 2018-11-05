@@ -33,6 +33,7 @@ namespace Backend.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Add(new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>("ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
     }
 }

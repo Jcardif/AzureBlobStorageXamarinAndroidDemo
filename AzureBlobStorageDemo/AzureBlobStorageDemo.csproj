@@ -66,6 +66,7 @@
     <Compile Include="Adapters\RecyclerViewAdapter.cs" />
     <Compile Include="AzureMobileService\AeroplanesService.cs" />
     <Compile Include="BlobStorageService\BlobStorageService.cs" />
+    <Compile Include="DialogFragment\AeroplaneDetailsDialogFragment.cs" />
     <Compile Include="DialogFragment\SelectOptionDialogFragment.cs" />
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\AppSettings.local.cs" />

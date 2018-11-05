@@ -25,7 +25,7 @@ namespace AzureBlobStorageDemo.Activity
     {
         private ProgressBar progressBar;
         private RecyclerView _recyclerView;
-        private Aeroplane _plane;
+        private MediaFile file;
 
         protected override  void OnCreate(Bundle savedInstanceState)
         {
@@ -43,8 +43,6 @@ namespace AzureBlobStorageDemo.Activity
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView1);
-            
-            _plane=new Aeroplane();
 
             fab.Click += FabOnClick;
             GetData();
@@ -102,75 +100,51 @@ namespace AzureBlobStorageDemo.Activity
         {
             if (e.Code == 1)
             {
-                var file = await CrossMedia.Current.TakePhotoAsync(
+                file = await CrossMedia.Current.TakePhotoAsync(
                     new StoreCameraMediaOptions
                     {
                         Directory = "Aeroplanes",
                         Name = $"{DateTime.Now}_Plane.jpg"
                     });
                 if (file == null) return;
-
-
-                var dataformParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                dataformParams.Height = ViewGroup.LayoutParams.WrapContent;
-                dataformParams.Width = ViewGroup.LayoutParams.WrapContent;
-                
-
-                var sfDataform = new SfDataForm(this);
-                sfDataform.DataObject = _plane;
-                sfDataform.LabelPosition = LabelPosition.Top;
-                sfDataform.ValidationMode = ValidationMode.LostFocus;
-                sfDataform.CommitMode = CommitMode.LostFocus;
-                sfDataform.Id = View.GenerateViewId();
-
-                var buttonParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                buttonParams.AddRule(LayoutRules.Below,sfDataform.Id);
-                buttonParams.Height = ViewGroup.LayoutParams.WrapContent;
-                buttonParams.Width = ViewGroup.LayoutParams.WrapContent;
-                buttonParams.AddRule(LayoutRules.CenterHorizontal);
-
-                var button=new Button(this);
-                button.Text="Done";
-                button.Id = View.GenerateViewId();
-
-                var relativeLayout = new RelativeLayout(this);
-                relativeLayout.AddView(sfDataform, dataformParams);
-                relativeLayout.AddView(button, buttonParams);
-
-
-                var builder = new Android.Support.V7.App.AlertDialog.Builder(this)
-                    .SetView(relativeLayout)
-                    .Create();
-                 builder.SetCanceledOnTouchOutside(false);
-                builder.Show();
-                builder.Window.SetLayout(1000, 500);
-
-                button.Click += async (s, ev) =>
-                {
-                    sfDataform.Validate();
-                    sfDataform.Commit();
-                    Dispose();
-
-                    progressBar.Visibility = ViewStates.Visible;
-                    await new BlobStorageService().UploadToBlobContainer(file.Path);
-                    file.Dispose();
-                    GetData();
-                };
+                //Todo: get aeroplan info
+               ShowInfoDialog();
 
             }
             else if (e.Code == 2)
             {
-                var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions()
+                file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions()
                 {
                     SaveMetaData = true,
                     CompressionQuality = 30
                 });
-                progressBar.Visibility = ViewStates.Visible;
-                await new BlobStorageService().UploadToBlobContainer(file.Path);
-                file.Dispose();
-                GetData();
+                if(file==null) return;
+                ShowInfoDialog();
             }
         }
+
+        private void ShowInfoDialog()
+        {
+            var dialog = new AeroplaneDetailsDialogFragment();
+            dialog.Show(FragmentManager.BeginTransaction(), "TAG2");
+            dialog.OnAeroplaneInfoComplete += Dialog_OnAeroplaneInfoComplete;
+        }
+
+        private async void Dialog_OnAeroplaneInfoComplete(object sender, AeroplaneInfo e)
+        {
+            progressBar.Visibility = ViewStates.Visible;
+            var uri=await new BlobStorageService().UploadToBlobContainer(file.Path);
+            file.Dispose();
+            var plane = new Aeroplane
+            {
+                Name = e.plane.Name,
+                Description = e.plane.Description,
+                Uri = uri.ToString()
+            };
+            var plane2 =await new AeroplanesService().AddAeroplane(plane);
+            GetData();
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);

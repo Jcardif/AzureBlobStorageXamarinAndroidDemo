@@ -13,6 +13,5 @@ namespace Backend.DataObjects
         public string ImageUri { get; set; }
         [Required, Column(TypeName = "VARCHAR")]
         public string Description { get; set; }
-
     }
 }

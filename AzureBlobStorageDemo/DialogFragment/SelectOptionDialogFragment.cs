@@ -39,11 +39,11 @@ namespace AzureBlobStorageDemo.DialogFragment
             switch (code)
             {
                 case 1:
-                    OnSelectionComplete.Invoke(this, new Selection(code));
+                    OnSelectionComplete?.Invoke(this, new Selection(code));
                     Dismiss();
                     break;
                 case 2:
-                    OnSelectionComplete.Invoke(this, new Selection(code));
+                    OnSelectionComplete?.Invoke(this, new Selection(code));
                     Dismiss();
                     break;
                 default:

@@ -12,9 +12,7 @@ namespace Backend.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
             SetSqlGenerator("System.Data.SqlClient", new EntityTableSqlGenerator());
-            ContextKey = "Backend.DataObjects.MobileServiceContext";
         }
 
         protected override void Seed(Backend.Models.MobileServiceContext context)
