@@ -16,12 +16,14 @@ using Square.Picasso;
 
 namespace AzureBlobStorageDemo.Adapters
 {
-    public class RecyclerViewAdapter: RecyclerView.Adapter, ICallback
+    public class RecyclerViewAdapter: RecyclerView.Adapter, ICallback, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private List<Aeroplane> _aeroplanes;
         private Context _context;
         private RecyclerViewHolder _holder;
         private int _position;
+        private ImageView _imgView;
+        private TextView _txtViewdesc;
         public RecyclerViewAdapter(List<Aeroplane> aeroplanes, Context context)
         {
             _aeroplanes = aeroplanes;
@@ -55,14 +57,18 @@ namespace AzureBlobStorageDemo.Adapters
                 .IndicatorsEnabled = true;
 
             var view = LayoutInflater.From(_context).Inflate(Resource.Layout.aeroplane_Item, parent, false);
-             var imgView = view.FindViewById<ImageView>(Resource.Id.aero_ImgView);
+            _imgView = view.FindViewById<ImageView>(Resource.Id.aero_ImgView);
             var textView = view.FindViewById<TextView>(Resource.Id.nameTxtView);
-            var txtViewdesc = view.FindViewById<TextView>(Resource.Id.descTxtView);
+            _txtViewdesc = view.FindViewById<TextView>(Resource.Id.descTxtView);
+
+            var vto = _imgView.ViewTreeObserver;
+            vto.AddOnGlobalLayoutListener(this);
+
             var viewHolder = new RecyclerViewHolder(view)
             {
-                ImageView = imgView,
+                ImageView = _imgView,
                 TitleTextView = textView,
-                DescTextView = txtViewdesc
+                DescTextView = _txtViewdesc
             };
 
             return viewHolder;
@@ -89,6 +95,11 @@ namespace AzureBlobStorageDemo.Adapters
                 .Load(_aeroplanes[_position].ImageUri)
                 .NetworkPolicy(NetworkPolicy.Offline)
                 .Into(_holder.ImageView, this);
+        }
+
+        public void OnGlobalLayout()
+        {
+            
         }
     }
 }
