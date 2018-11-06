@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -16,7 +18,10 @@ using Android.Widget;
 using AzureBlobStorageDemo.Helpers;
 using AzureBlobStorageDemo.Models;
 using AzureBlobStorageDemo.ViewHolders;
+using Plugin.Connectivity;
 using Square.Picasso;
+using Xamarin.Essentials;
+using static AzureBlobStorageDemo.Helpers.AppSettings;
 
 namespace AzureBlobStorageDemo.Adapters
 {
@@ -28,6 +33,7 @@ namespace AzureBlobStorageDemo.Adapters
         private int _position;
         private ImageView _imgView;
         private TextView _txtViewdesc;
+        
         public RecyclerViewAdapter(List<Aeroplane> aeroplanes, Context context)
         {
             _aeroplanes = aeroplanes;
@@ -43,13 +49,28 @@ namespace AzureBlobStorageDemo.Adapters
             CustomBindViewHolder(vh, position);
         }
 
-        private void CustomBindViewHolder(RecyclerViewHolder vh, int position)
+        private async void CustomBindViewHolder(RecyclerViewHolder vh, int position)
         {
             vh.TitleTextView.Text = _aeroplanes[position].Name;
             vh.DescTextView.Text = _aeroplanes[position].Description;
-            
+
+            if (Preferences.Get("sas_token",null) is null)
+            {
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+                    Toast.MakeText(_context,"No internet connection", ToastLength.Short).Show();
+                    return;
+                }
+
+                var token = Preferences.Get("sas_token", null);
+                if (token is null) SetToken(_context);
+                Picasso.With(_context)
+                    .Load(_aeroplanes[_position].ImageUri+token)
+                    .Fetch(this);
+            }
+             
             Picasso.With(_context)
-                .Load(_aeroplanes[position].LocalImgUrl)
+                .Load(_aeroplanes[position].ImageUri+ Preferences.Get("sas_token", null))
                 .Fit()
                 .CenterCrop()
                 .NetworkPolicy(NetworkPolicy.Offline)
@@ -84,25 +105,10 @@ namespace AzureBlobStorageDemo.Adapters
             try
             {
                 Toast.MakeText(_context, $"An error occured for {_aeroplanes[_position].Name}", ToastLength.Short).Show();
-
-                string url;
-                var funcUri = "";
-                var client = new HttpClient();
-                var result = await client.GetAsync(funcUri);
-                if (result.IsSuccessStatusCode)
-                {
-                    url = _aeroplanes[_position].ImageUri + result.Content.ReadAsStringAsync();
-                }
-                else
-                {
-                    Toast.MakeText(_context,"Could not retrieve Image", ToastLength.Short).Show();
-                    return;
-                }
-
-                _aeroplanes[_position].LocalImgUrl = url;
-                await new AzureMobileService.AeroplanesService().UpdateAeroplae(_aeroplanes[_position]);
+                var token = Preferences.Get("sas_token", null);
+                if (token is null) SetToken(_context);
                 Picasso.With(_context)
-                    .Load(_aeroplanes[_position].LocalImgUrl)
+                    .Load(_aeroplanes[_position].ImageUri+token)
                     .Fetch(this);
             }
             catch (Exception ex)
@@ -110,7 +116,7 @@ namespace AzureBlobStorageDemo.Adapters
                 Toast.MakeText(_context, ex.Message, ToastLength.Short).Show();
             }
         }
-
+        
         public void OnSuccess()
         {
         }

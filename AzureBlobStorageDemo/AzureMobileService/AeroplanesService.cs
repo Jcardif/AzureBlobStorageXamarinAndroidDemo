@@ -47,17 +47,9 @@ namespace AzureBlobStorageDemo.AzureMobileService
 
         public async Task<List<Aeroplane>> GetAeroplanes(Loading l)
         {
-            List<Aeroplane> aeroplanes;
-            if (l == Loading.fast)
-            {
-                aeroplanes = await _aeroplaneTable.OrderBy(a => a.AzureCreated).ToListAsync();
-            }
-            else
-            {
-                await Initialise();
-                await SyncAeroplanes();
-                aeroplanes = await _aeroplaneTable.OrderBy(a => a.AzureCreated).ToListAsync();
-            }
+            await Initialise();
+            await SyncAeroplanes();
+            var aeroplanes = await _aeroplaneTable.OrderBy(a => a.AzureCreated).ToListAsync();
             return aeroplanes;
         }
 

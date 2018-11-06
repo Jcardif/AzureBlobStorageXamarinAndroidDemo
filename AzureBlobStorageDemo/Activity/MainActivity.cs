@@ -51,7 +51,7 @@ namespace AzureBlobStorageDemo.Activity
 
             fab.Click += FabOnClick;
             GetData(AeroplanesService.Loading.fast);
-            GetData(AeroplanesService.Loading.slow);
+            //GetData(AeroplanesService.Loading.slow);
         }
 
 

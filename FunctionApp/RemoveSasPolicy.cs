@@ -41,7 +41,7 @@ namespace FunctionApp
             }
 
             log.LogInformation("Waiting to remove");
-            Thread.Sleep(420000);
+            Thread.Sleep(240000);
             log.LogInformation("Time to remove");
             var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["BlobConnectionSstring"].ConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();

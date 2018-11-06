@@ -16,8 +16,6 @@ namespace AzureBlobStorageDemo.Models
         public string Name { get; set; }
         [Display(Name = "Description"), Required(AllowEmptyStrings = false, ErrorMessage = "Description Cannot be Empty")]
         public string Description { get; set; }
-        [JsonIgnore, Display(AutoGenerateField = false)]
-        public string LocalImgUrl { get; set; }
         [Version, Display(AutoGenerateField = false)]
         public string AzureVersion { get; set; }
 
