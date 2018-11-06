@@ -2,9 +2,11 @@
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using AzureBlobStorageDemo.Helpers;
 using AzureBlobStorageDemo.Models;
 using Plugin.CurrentActivity;
 using Syncfusion.Android.DataForm;
+using Syncfusion.Android.DataForm.Editors;
 
 namespace AzureBlobStorageDemo.DialogFragment
 {
@@ -19,7 +21,13 @@ namespace AzureBlobStorageDemo.DialogFragment
     public class AeroplaneDetailsDialogFragment : Android.App.DialogFragment
     {
         Aeroplane _plane=new Aeroplane();
-        public event EventHandler<AeroplaneInfo> OnAeroplaneInfoComplete; 
+        public event EventHandler<AeroplaneInfo> OnAeroplaneInfoComplete;
+        public override void OnStart()
+        {
+            base.OnStart();
+            Dialog.Window.SetLayout(1000, 1000);
+        }
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
@@ -30,6 +38,8 @@ namespace AzureBlobStorageDemo.DialogFragment
 
 
             var sfDataform = new SfDataForm(Context.ApplicationContext);
+            sfDataform.LayoutManager=new SfHelper(sfDataform);
+            sfDataform.RegisterEditor("Description", "DataFormMultiLineTextEditor");
             sfDataform.DataObject = _plane;
             sfDataform.LabelPosition = LabelPosition.Top;
             sfDataform.ValidationMode = ValidationMode.LostFocus;
@@ -62,8 +72,14 @@ namespace AzureBlobStorageDemo.DialogFragment
                 {
                     OnAeroplaneInfoComplete?.Invoke(this, new AeroplaneInfo(_plane));
                 }
+                Dismiss();
             };
             return view;
+        }
+        public override void OnActivityCreated(Bundle savedInstanceState)
+        {
+            Dialog.Window.RequestFeature(WindowFeatures.NoTitle); //set the title bar to invisible
+            base.OnActivityCreated(savedInstanceState);
         }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="DialogFragment\SelectOptionDialogFragment.cs" />
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\AppSettings.local.cs" />
+    <Compile Include="Helpers\SfHelper.cs" />
     <Compile Include="Models\Aeroplane.cs" />
     <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -167,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\syncfusion_editText_style.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

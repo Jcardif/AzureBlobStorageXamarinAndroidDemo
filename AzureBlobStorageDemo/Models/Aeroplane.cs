@@ -11,24 +11,21 @@ namespace AzureBlobStorageDemo.Models
         [Display(AutoGenerateField = false)]
         public string Id { get; set; }
         [Display(AutoGenerateField = false)]
-        public string Uri { get; set; }
+        public string ImageUri { get; set; }
         [Display(Name = "Name"), Required(AllowEmptyStrings = false, ErrorMessage = "Name Cannot be Empty")]
         public string Name { get; set; }
         [Display(Name = "Description"), Required(AllowEmptyStrings = false, ErrorMessage = "Description Cannot be Empty")]
         public string Description { get; set; }
-        
-        [JsonIgnore]
-        public string UriLoad { get; set; }
-        [Version]
+        [Version, Display(AutoGenerateField = false)]
         public string AzureVersion { get; set; }
 
-        [CreatedAt]
+        [CreatedAt, Display(AutoGenerateField = false)]
         public string AzureCreated { get; set; }
 
-        [UpdatedAt]
+        [UpdatedAt, Display(AutoGenerateField = false)]
         public string AzureUpdated { get; set; }
 
-        [Deleted]
+        [Deleted,Display(AutoGenerateField = false)]
         public string AzureDeleted { get; set; }
     }
 }

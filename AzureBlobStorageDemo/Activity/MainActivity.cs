@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
@@ -15,7 +16,9 @@ using AzureBlobStorageDemo.Models;
 using Plugin.CurrentActivity;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Square.Picasso;
 using Syncfusion.Android.DataForm;
+using File = Java.IO.File;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace AzureBlobStorageDemo.Activity
@@ -30,6 +33,8 @@ namespace AzureBlobStorageDemo.Activity
         protected override  void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Picasso.With(this)
+                .IndicatorsEnabled = true;
 
             // This MobileServiceClient has been configured to communicate with the Azure Mobile App and
             // Azure Gateway using the application url. You're all set to start working with your Mobile App!
@@ -134,14 +139,16 @@ namespace AzureBlobStorageDemo.Activity
         {
             progressBar.Visibility = ViewStates.Visible;
             var uri=await new BlobStorageService().UploadToBlobContainer(file.Path);
-            file.Dispose();
+            Toast.MakeText(this,"Uploaded to blob storage",ToastLength.Short).Show();
+            new File(file.Path).Delete();
             var plane = new Aeroplane
             {
                 Name = e.plane.Name,
                 Description = e.plane.Description,
-                Uri = uri.ToString()
+                ImageUri = uri.ToString()
             };
-            var plane2 =await new AeroplanesService().AddAeroplane(plane);
+            await new AeroplanesService().AddAeroplane(plane);
+            Toast.MakeText(this, "Added to database",ToastLength.Short).Show();
             GetData();
         }
 

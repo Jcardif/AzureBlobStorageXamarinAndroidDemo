@@ -20,7 +20,7 @@ namespace AzureBlobStorageDemo.Adapters
     {
         private List<Aeroplane> _aeroplanes;
         private Context _context;
-        private RecyclerView.ViewHolder _holder;
+        private RecyclerViewHolder _holder;
         private int _position;
         public RecyclerViewAdapter(List<Aeroplane> aeroplanes, Context context)
         {
@@ -43,17 +43,17 @@ namespace AzureBlobStorageDemo.Adapters
             vh.DescTextView.Text = _aeroplanes[position].Description;
 
             Picasso.With(_context)
-                .IndicatorsEnabled = true;
-
-            Picasso.With(_context)
-                .Load(_aeroplanes[position].Uri)
-
+                .Load(_aeroplanes[position].ImageUri)
+                .NetworkPolicy(NetworkPolicy.Offline)
                 .Into(vh.ImageView,this);
         }
 
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
+            Picasso.With(_context)
+                .IndicatorsEnabled = true;
+
             var view = LayoutInflater.From(_context).Inflate(Resource.Layout.aeroplane_Item, parent, false);
              var imgView = view.FindViewById<ImageView>(Resource.Id.aero_ImgView);
             var textView = view.FindViewById<TextView>(Resource.Id.nameTxtView);
@@ -74,8 +74,8 @@ namespace AzureBlobStorageDemo.Adapters
             try
             {
                 Picasso.With(_context)
-                    .Load(_aeroplanes[_position].Uri)
-                    .Fetch();
+                    .Load(_aeroplanes[_position].ImageUri)
+                    .Fetch(this);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,10 @@ namespace AzureBlobStorageDemo.Adapters
 
         public void OnSuccess()
         {
-
+            Picasso.With(_context)
+                .Load(_aeroplanes[_position].ImageUri)
+                .NetworkPolicy(NetworkPolicy.Offline)
+                .Into(_holder.ImageView, this);
         }
     }
 }
