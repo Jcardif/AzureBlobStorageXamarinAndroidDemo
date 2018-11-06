@@ -50,14 +50,15 @@ namespace AzureBlobStorageDemo.Activity
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView1);
 
             fab.Click += FabOnClick;
-            GetData();
+            GetData(AeroplanesService.Loading.fast);
+            GetData(AeroplanesService.Loading.slow);
         }
 
 
-        private async void GetData()
+        private async void GetData(AeroplanesService.Loading l)
         {
             var aeroplaneService = new AeroplanesService();
-            var planes = await aeroplaneService.GetAeroplanes();
+            var planes = await aeroplaneService.GetAeroplanes(l);
             _recyclerView.SetAdapter(new RecyclerViewAdapter(planes, this));
             _recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             progressBar.Visibility = ViewStates.Invisible;
@@ -79,7 +80,7 @@ namespace AzureBlobStorageDemo.Activity
                     return true;
                 case Resource.Id.action_refresh:
                     progressBar.Visibility = ViewStates.Visible;
-                     GetData();
+                     GetData(AeroplanesService.Loading.slow);
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);
@@ -112,7 +113,7 @@ namespace AzureBlobStorageDemo.Activity
                         Name = $"{DateTime.Now}_Plane.jpg"
                     });
                 if (file == null) return;
-                //Todo: get aeroplan info
+                //Todo: get aeroplane info
                ShowInfoDialog();
 
             }
@@ -149,7 +150,7 @@ namespace AzureBlobStorageDemo.Activity
             };
             await new AeroplanesService().AddAeroplane(plane);
             Toast.MakeText(this, "Added to database",ToastLength.Short).Show();
-            GetData();
+            GetData(AeroplanesService.Loading.fast);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
