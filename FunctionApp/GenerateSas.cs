@@ -47,9 +47,9 @@ namespace FunctionApp
             });
             blobContainer.SetPermissions(containerPermissions);
             var sasToken = blobContainer.GetSharedAccessSignature(null, key);
-            //var client = new HttpClient();
-            //var uri = "https://" + $"e-spafunctions.azurewebsites.net/api/RemoveSasPolicy?code=KpIZUIRIk8BzGaqRhuCZfApB8x5x/wPHhgqOr7e0l2ActChUMljLaQ==&policyKey={key}&containerName={containerName}";
-            //client.GetAsync(uri);
+            var client = new HttpClient();
+            var uri = "https://" + $"aeroclubfunctionapp.azurewebsites.net/api/RemoveSas?code=DulpvoQCZJ0T5V6xy5GIa8pSir7fO5M4ygL58DOykAtVCX6Vf7zwOg==&policyKey={key}&containerName={containerName}";
+            client.GetAsync(uri);
             return req.CreateResponse(HttpStatusCode.OK, sasToken);
         }
     }
