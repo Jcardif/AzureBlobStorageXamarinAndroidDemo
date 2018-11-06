@@ -70,6 +70,7 @@
     <Compile Include="DialogFragment\SelectOptionDialogFragment.cs" />
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\AppSettings.local.cs" />
+    <Compile Include="Helpers\CustomLeadingMarginSpan.cs" />
     <Compile Include="Helpers\SfHelper.cs" />
     <Compile Include="Models\Aeroplane.cs" />
     <Compile Include="Activity\MainActivity.cs" />
