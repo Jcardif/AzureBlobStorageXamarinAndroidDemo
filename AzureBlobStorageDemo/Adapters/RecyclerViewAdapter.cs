@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 using Android.App;
@@ -48,7 +49,7 @@ namespace AzureBlobStorageDemo.Adapters
             vh.DescTextView.Text = _aeroplanes[position].Description;
             
             Picasso.With(_context)
-                .Load(_aeroplanes[position].ImageUri)
+                .Load(_aeroplanes[position].LocalImgUrl)
                 .Fit()
                 .CenterCrop()
                 .NetworkPolicy(NetworkPolicy.Offline)
@@ -78,13 +79,30 @@ namespace AzureBlobStorageDemo.Adapters
         }
 
         public override int ItemCount => _aeroplanes.Count;
-        public void OnError()
+        public async void OnError()
         {
             try
             {
                 Toast.MakeText(_context, $"An error occured for {_aeroplanes[_position].Name}", ToastLength.Short).Show();
+
+                string url;
+                var funcUri = "";
+                var client = new HttpClient();
+                var result = await client.GetAsync(funcUri);
+                if (result.IsSuccessStatusCode)
+                {
+                    url = _aeroplanes[_position].ImageUri + result.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    Toast.MakeText(_context,"Could not retrieve Image", ToastLength.Short).Show();
+                    return;
+                }
+
+                _aeroplanes[_position].LocalImgUrl = url;
+                await new AzureMobileService.AeroplanesService().UpdateAeroplae(_aeroplanes[_position]);
                 Picasso.With(_context)
-                    .Load(_aeroplanes[_position].ImageUri)
+                    .Load(_aeroplanes[_position].LocalImgUrl)
                     .Fetch(this);
             }
             catch (Exception ex)
