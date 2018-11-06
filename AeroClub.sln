@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeroClub", "AzureBlobStorag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{B805A428-BA26-408E-8D2D-F81FBFB69EE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionApp", "FunctionApp\FunctionApp.csproj", "{796A987B-7630-4432-8B4F-448C3009E25A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{B805A428-BA26-408E-8D2D-F81FBFB69EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B805A428-BA26-408E-8D2D-F81FBFB69EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B805A428-BA26-408E-8D2D-F81FBFB69EE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{796A987B-7630-4432-8B4F-448C3009E25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796A987B-7630-4432-8B4F-448C3009E25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796A987B-7630-4432-8B4F-448C3009E25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796A987B-7630-4432-8B4F-448C3009E25A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
