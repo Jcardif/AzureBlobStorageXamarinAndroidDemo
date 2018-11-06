@@ -2482,8 +2482,8 @@ namespace AzureBlobStorageDemo
 			// aapt resource value: 0x7f090027
 			public const int add = 2131296295;
 			
-			// aapt resource value: 0x7f09008d
-			public const int aero_ImgView = 2131296397;
+			// aapt resource value: 0x7f09008e
+			public const int aero_ImgView = 2131296398;
 			
 			// aapt resource value: 0x7f090070
 			public const int alertTitle = 2131296368;
@@ -2689,8 +2689,8 @@ namespace AzureBlobStorageDemo
 			// aapt resource value: 0x7f090028
 			public const int multiply = 2131296296;
 			
-			// aapt resource value: 0x7f09008e
-			public const int nameTxtView = 2131296398;
+			// aapt resource value: 0x7f09008d
+			public const int nameTxtView = 2131296397;
 			
 			// aapt resource value: 0x7f09009a
 			public const int navigation_header_container = 2131296410;

@@ -46,11 +46,13 @@ namespace AzureBlobStorageDemo.Adapters
         {
             vh.TitleTextView.Text = _aeroplanes[position].Name;
             vh.DescTextView.Text = _aeroplanes[position].Description;
-
+            
             Picasso.With(_context)
                 .Load(_aeroplanes[position].ImageUri)
+                .Fit()
+                .CenterCrop()
                 .NetworkPolicy(NetworkPolicy.Offline)
-                .Into(vh.ImageView,this);
+                .Into(vh.ImageView, this);
         }
 
 
@@ -80,6 +82,7 @@ namespace AzureBlobStorageDemo.Adapters
         {
             try
             {
+                Toast.MakeText(_context, $"An error occured for {_aeroplanes[_position].Name}", ToastLength.Short).Show();
                 Picasso.With(_context)
                     .Load(_aeroplanes[_position].ImageUri)
                     .Fetch(this);
@@ -92,10 +95,6 @@ namespace AzureBlobStorageDemo.Adapters
 
         public void OnSuccess()
         {
-            Picasso.With(_context)
-                .Load(_aeroplanes[_position].ImageUri)
-                .NetworkPolicy(NetworkPolicy.Offline)
-                .Into(_holder.ImageView, this);
         }
 
     }
