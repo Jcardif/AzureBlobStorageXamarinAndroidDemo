@@ -5,18 +5,21 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AzureBlobStorageDemo.Helpers;
 using AzureBlobStorageDemo.Models;
 using AzureBlobStorageDemo.ViewHolders;
 using Square.Picasso;
 
 namespace AzureBlobStorageDemo.Adapters
 {
-    public class RecyclerViewAdapter: RecyclerView.Adapter, ICallback, ViewTreeObserver.IOnGlobalLayoutListener
+    public class RecyclerViewAdapter: RecyclerView.Adapter, ICallback
     {
         private List<Aeroplane> _aeroplanes;
         private Context _context;
@@ -60,9 +63,7 @@ namespace AzureBlobStorageDemo.Adapters
             _imgView = view.FindViewById<ImageView>(Resource.Id.aero_ImgView);
             var textView = view.FindViewById<TextView>(Resource.Id.nameTxtView);
             _txtViewdesc = view.FindViewById<TextView>(Resource.Id.descTxtView);
-
-            var vto = _imgView.ViewTreeObserver;
-            vto.AddOnGlobalLayoutListener(this);
+            
 
             var viewHolder = new RecyclerViewHolder(view)
             {
@@ -97,9 +98,5 @@ namespace AzureBlobStorageDemo.Adapters
                 .Into(_holder.ImageView, this);
         }
 
-        public void OnGlobalLayout()
-        {
-            
-        }
     }
 }
